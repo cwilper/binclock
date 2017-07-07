@@ -43,6 +43,7 @@ Adafruit_MCP23017 mcp;
 byte buttonState;
 byte prevButtonState;
 byte hour, minute, second;
+byte prevSecond;
 byte alarmHour, alarmMinute;
 bool alarmEnabled;
 bool alarmOn;
@@ -182,8 +183,8 @@ void turnAlarmOn() {
 
 void loop() {
   readAlarm();
-  readButtonState();
   while (true) {
+    readButtonState();
     readTime();
     boolean alarmChanged = false;
     boolean timeChanged = false;
@@ -262,7 +263,7 @@ void loop() {
       writeTime();
     }
 
-    if (buttonIsDown(3)) {
+if (buttonIsDown(3)) {
       updateDisplay(0, alarmMinute, alarmHour, alarmEnabled);
     } else {
       boolean indicator = (displayMode != 4 && !alarmOn && !snoozeOn && alarmEnabled) || ((alarmOn || snoozeOn) && (second % 2 == 0));
@@ -279,12 +280,22 @@ void loop() {
       }
     }
 
-    setBeeping(alarmOn && second % 2 == 0);
+    bool shouldBeep = alarmOn && second % 2 == 0;
+    if (shouldBeep) {
+      setBeeping(true);
+      updateDisplay(0, 0, 0, true);
+    } else {
+      setBeeping(false);
+    }
 
     prevButtonState = buttonState;
-    for (int i = 0; i < 10 && buttonState == prevButtonState; i++) {
-      delay(90);
-      readButtonState();
+    prevSecond = second;
+    for (int i = 0; i < 10 && buttonState == prevButtonState && second == prevSecond; i++) {
+      delay(100);
+      readTime();
+      if (second == prevSecond) {
+        readButtonState();
+      }
     }
   }
 }
