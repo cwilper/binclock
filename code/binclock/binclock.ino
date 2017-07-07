@@ -279,22 +279,12 @@ void loop() {
       }
     }
 
-    setBeeping(alarmOn);
+    setBeeping(alarmOn && second % 2 == 0);
 
     prevButtonState = buttonState;
     for (int i = 0; i < 10 && buttonState == prevButtonState; i++) {
-      delay(100);
-      if (alarmOn) {
-        if (i == 3) {
-          setBeeping(false);
-        } else if (i == 6) {
-          setBeeping(true);
-        }
-      }
+      delay(90);
       readButtonState();
-    }
-    if (alarmOn) {
-      setBeeping(false);
     }
   }
 }
