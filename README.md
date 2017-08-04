@@ -68,4 +68,4 @@ There are four buttons, left to right: `MIN`, `HR`, `SET`, and `ALM`.
 ## Sources
 
 * [Schematic](https://raw.githubusercontent.com/cwilper/binclock/master/schematic/schematic.png)
-* [Source Code](https://github.com/cwilper/binclock/blob/master/code/binclock.ino)
+* [Source Code](https://github.com/cwilper/binclock/blob/master/code/binclock/binclock.ino)
